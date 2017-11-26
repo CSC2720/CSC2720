@@ -1,4 +1,4 @@
-package Constructs;
+package classes;
 import java.sql.*;
 public class Employee {
 	private int ID;
@@ -17,7 +17,8 @@ public class Employee {
 		this.ID=ID;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());
 			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT * FROM Employee WHERE EMPLOYEE_ID="+ID+";");
 			if(reslt.next()) {
@@ -41,7 +42,8 @@ public class Employee {
 		sqlCommand="INSERT INTO Employee (Last_Name,First_Name,Job_Title,SSN) values(\""+lastName+"\",\""+firstName+"\",\""+title+"\","+ssn+");";
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());
 			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			ResultSet reslt = stmnt.executeQuery("SELECT Employee_ID FROM Employee WHERE SSN="+ssn+";");
@@ -63,7 +65,8 @@ public class Employee {
 		sqlCommand="INSERT INTO Employee (Last_Name,First_Name,Job_Title,SSN,Address,Phone_Number) values(\""+lastName+"\",\""+firstName+"\",\""+title+"\","+ssn+",\""+address+"\",\""+phone+"\");";
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());
 			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			ResultSet reslt = stmnt.executeQuery("SELECT Employee_ID FROM Employee WHERE SSN="+ssn+";");
@@ -107,7 +110,8 @@ public class Employee {
 		Employee [] a=null;
 		int i=0;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());
 			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT MAX(Employee_ID) FROM EMPLOYEE;");
 			if(reslt.next()) {
@@ -181,7 +185,8 @@ public class Employee {
 	public void SQLInterface() {
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());
 			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			conn.close();

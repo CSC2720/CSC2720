@@ -1,4 +1,4 @@
-package Constructs;
+package classes;
 
 public class Time {
 	private int hour;

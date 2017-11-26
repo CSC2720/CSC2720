@@ -1,4 +1,4 @@
-package Constructs;
+package classes;
 
 import javafx.stage.*;
 import javafx.scene.*;
@@ -28,5 +28,6 @@ public class AlertBox {
         window.setScene(scene);
         window.showAndWait();
     }
+   
 
 }

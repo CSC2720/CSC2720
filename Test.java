@@ -1,14 +1,17 @@
-package Constructs;
+package classes;
 
 
 public class Test {
 	public static void main(String [] arg) {
+		new Job("DataBase",7.25);
 			Employee a=new Employee ("Holmes","Christian","Database",123456789);
 			System.out.println(a.getFullTitle());
+			new Job("Antagonist",0.25);
 			a=new Employee ("Kong","Donkey","Antagonist",000000000);
 			System.out.println(a.getFullTitle());
 			a=new Employee(1);
 			a.setFirstName("Cameron");
+			new Job("Hero",0.75);
 			a=new Employee ("Mario","Mushroom","Hero",000000001,"1 Mushroom Kingdom", "123456789");
 			System.out.println(a.getFullTitle());
 			a.createEmergencyContact("My Guy","123 Mushroom Kingdom", "1234567891");

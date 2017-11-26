@@ -1,4 +1,4 @@
-package Constructs;
+package classes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +18,8 @@ public class EmergencyContact {
 		this.ID=ID;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());
 			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT * FROM Emergency_Contact WHERE Emergency_Contact_ID="+ID+";");
 			if(reslt.next()) {
@@ -40,8 +41,8 @@ public class EmergencyContact {
 		sqlCommand="INSERT INTO Emergency_Contact (Name,Address,Phone_Number,employee_Employee_ID) values(\""+name+"\",\""+address+"\",\""+num+"\","+EID+");";
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			ResultSet reslt = stmnt.executeQuery("SELECT Emergency_Contact_ID FROM Emergency_Contact WHERE Phone_Number=\""+phone+"\";");
 			if(reslt.next()) {
@@ -61,8 +62,8 @@ public class EmergencyContact {
 		String address=null;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT * FROM Emergency_Contact WHERE Emergency_Contact_ID="+1+";");
 			if(reslt.next()) {
 				phone=reslt.getString("Phone_Number");
@@ -84,8 +85,8 @@ public class EmergencyContact {
 		EmergencyContact [] a = null;
 		int i=0;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT MAX(Emergency_Contact_ID) FROM Emergency_Contact;");
 			if(reslt.next()) 
 				a= new EmergencyContact [reslt.getInt("MAX(Emergency_Contact_ID)")];
@@ -133,8 +134,8 @@ public class EmergencyContact {
 	public void SQLInterface() {
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			conn.close();
 		}catch (Exception exc) {

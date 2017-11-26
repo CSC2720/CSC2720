@@ -1,4 +1,4 @@
-package Constructs;
+package classes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,8 +16,8 @@ public class Job {
 		sqlCommand="SELECT Pay FROM Salary WHERE Title=\""+job+"\";";
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery(sqlCommand);
 			if(reslt.next()) {
 			this.pay=reslt.getDouble("Pay");
@@ -33,8 +33,8 @@ public class Job {
 		sqlCommand="INSERT INTO Salary (Title,Pay) values(\""+job+"\","+pay+");";
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			conn.close();
 		}catch (Exception exc) {
@@ -52,8 +52,8 @@ public class Job {
 		Job [] a=null;
 		int i=0;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT COUNT(Title) FROM Salary;");
 			if(reslt.next()) {
 				a=new Job [reslt.getInt("COUNT(Title)")];
@@ -80,8 +80,8 @@ public class Job {
 	public void SQLInterface() {
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			conn.close();
 		}catch (Exception exc) {

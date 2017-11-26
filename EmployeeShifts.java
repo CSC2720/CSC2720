@@ -1,4 +1,4 @@
-package Constructs;
+package classes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,8 +30,8 @@ public class EmployeeShifts {
 		this.EID=EID;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt=stmnt.executeQuery("SELECT * FROM Shifts WHERE employee_Employee_ID="+EID+" AND Day="+day+";");
 			if(reslt.next()) {
 				this.clockOut=reslt.getString("Shift_Clock_Out");
@@ -39,8 +39,8 @@ public class EmployeeShifts {
 				this.firstName=reslt.getString("FN");
 				this.salaryEarnings=reslt.getDouble("Salary");
 				timeWorked();
-				setSalaryEarnings();
-				setTotalEarnings();
+				SalaryEarnings();
+				TotalEarnings();
 			}
 			conn.close();
 		}catch (Exception exc) {
@@ -59,13 +59,13 @@ public class EmployeeShifts {
 			this.clockOut="23:59:59";
 		}
 		timeWorked();
-		setSalaryEarnings();
-		setTotalEarnings();
+		SalaryEarnings();
+		TotalEarnings();
 		sqlCommand="insert into Shifts (Day,Shift,Shift_Clock_In,Shift_Clock_Out,Hours_Worked,employee_Employee_ID,LN,FN,Salary,Total_Earnings) values(DAYOFWEEK(\""+shift+"\"),\""+shift+"\",\""+clockIn+"\",\""+this.clockOut+"\","+workedTime.getTime()+","+EID+",\""+lastName+"\",\""+firstName+"\","+salaryEarnings+","+totalEarnings+");";
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			ResultSet reslt=stmnt.executeQuery("SELECT Day FROM Shifts WHERE Shift=\""+shift+"\" AND Shift_Clock_In=\""+clockIn+"\" AND employee_Employee_ID="+EID+";");
 			if(reslt.next())
@@ -80,15 +80,17 @@ public class EmployeeShifts {
 		this.clockIn="00:00:00";
 		this.clockOut=clockOut;
 		this.EID=EID;
-		timeWorked();
-		setSalaryEarnings();
 		this.lastName=lastName;
 		this.firstName=firstName;
+		timeWorked();
+		SalaryEarnings();
+		System.out.print(salaryEarnings);
+		TotalEarnings();
 		sqlCommand="insert into Shifts (Day,Shift,Shift_Clock_In,Shift_Clock_Out,Hours_Worked,employee_Employee_ID,LN,FN,Salary,Total_Earnings) values(DAYOFWEEK("+shift+"),"+shift+",\""+clockIn+"\",\""+clockOut+"\","+workedTime.getTime()+","+EID+",\""+lastName+"\",\""+firstName+"\","+salaryEarnings+","+totalEarnings+");";
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			ResultSet reslt=stmnt.executeQuery("SELECT Day FROM Shifts WHERE employee_Employee_ID="+EID+" AND Shift="+shift+" AND Shift_Clock_In=\""+clockIn+"\";");
 			if(reslt.next())
@@ -131,12 +133,12 @@ public class EmployeeShifts {
 	public double getTotalEarnings() {
 		return totalEarnings;
 	}
-	public void setSalaryEarnings() {
+	public void SalaryEarnings() {
 		double pay=0.0;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT Pay FROM Salary WHERE Title= (SELECT Job_Title FROM Employee WHERE Employee_ID="+EID+");");
 			if(reslt.next()) {
 				pay=reslt.getDouble("pay");
@@ -147,12 +149,12 @@ public class EmployeeShifts {
 		}
 		salaryEarnings=(int)(pay*workedTime.getTime()*100+.5)/100.0;
 	}
-	public void setTotalEarnings() {
+	public void TotalEarnings() {
 		double pay=0.0;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT Salary FROM Shifts WHERE employee_Employee_ID="+EID+";");
 			while(reslt.next()) {
 				pay+=reslt.getDouble("Salary");
@@ -167,8 +169,8 @@ public class EmployeeShifts {
 		String all=null;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT * FROM Shifts WHERE Shift="+day+";");
 			all="";
 			while(reslt.next()) {
@@ -190,8 +192,8 @@ public class EmployeeShifts {
 		String all=null;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT * FROM Shifts WHERE Shift="+day+" AND employee_Employee_ID="+EID+";");
 			all="";
 			while(reslt.next()) {
@@ -213,8 +215,8 @@ public class EmployeeShifts {
 		String all=null;
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT * FROM Shifts WHERE employee_Employee_ID="+EID+";");
 			all="";
 			while(reslt.next()) {
@@ -237,8 +239,8 @@ public class EmployeeShifts {
 		EmployeeShifts a []=null;
 		int i=0;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			ResultSet reslt = stmnt.executeQuery("SELECT COUNT(*) FROM Shifts;");
 			if(reslt.next()) 
 				a= new EmployeeShifts [reslt.getInt("COUNT(*)")];
@@ -300,6 +302,16 @@ public class EmployeeShifts {
 		sqlCommand="UPDATE Shifts SET LN="+firstName+" WHERE employee_Employee_ID=\""+EID+"\";";
 		this.firstName=firstName;
 	}
+	public void setSalaryEarnings() {
+		SalaryEarnings();
+		sqlCommand="UPDATE Shifts SET Salary="+salaryEarnings+" WHERE Day="+day+" AND Shift=\""+shift+"\" AND Shift_Clock_In=\""+clockIn+"\" AND employee_Employee_ID=\""+EID+"\";";
+		SQLInterface();
+	}
+	public void setTotalEarnings() {
+		TotalEarnings();
+		sqlCommand="UPDATE Shifts SET Total_Earnings="+totalEarnings+" WHERE Day="+day+" AND Shift=\""+shift+"\" AND Shift_Clock_In=\""+clockIn+"\" AND employee_Employee_ID=\""+EID+"\";";
+		SQLInterface();
+	}
 	public void setScheduleForTheYear() {
 		sqlCommand="CALL SetSchedule(DAYOFWEEK(\""+shift+"\"),\""+shift+"\",\""+clockIn+"\",\""+clockOut+"\","+EID+");";
 		SQLInterface();
@@ -307,8 +319,8 @@ public class EmployeeShifts {
 	public void SQLInterface() {
 		Connection conn=null;
 		try {
-			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/Manager?useSSL=false","student","student");
-			Statement stmnt = conn.createStatement();
+			Class.forName(MYConnection.getDriver());
+			conn = DriverManager.getConnection(MYConnection.getUrl(),MYConnection.getUsername(),MYConnection.getPassword());			Statement stmnt = conn.createStatement();
 			stmnt.executeUpdate(sqlCommand);
 			conn.close();
 		}catch (Exception exc) {
